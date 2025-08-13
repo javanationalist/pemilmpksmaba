@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Pengurus Kelas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Pemilihan Pengurus Angkatan</h1>
+            <p>Pilih Dapil Anda, lalu pilih satu perwakilan dari setiap kelas yang tersedia.</p>
+        </header>
+
+        <section class="selection-area card">
+            <div class="form-group">
+                <label for="dapil-select">1. Pilih Daerah Pilihan (Dapil) Anda</label>
+                <select id="dapil-select" class="form-control">
+                    <option value="">-- Memuat Dapil --</option>
+                </select>
+            </div>
+        </section>
+
+        <form id="vote-form" style="display: none;">
+            <main id="vote-content-area" class="card" style="padding: 0; overflow: hidden;">
+                <img src="" alt="Foto Dapil" id="dapil-photo" class="dapil-photo-header">
+                <div id="class-list-container">
+                    </div>
+            </main>
+    
+            <footer style="margin-top: 0; border-top:none; padding-top: 24px;">
+                <a href="admin.html" class="admin-link">Masuk sebagai admin</a>
+                <button id="submit-vote" type="submit" class="submit-button" disabled>Submit Semua Pilihan</button>
+            </footer>
+        </form>
+
+    </div>
+
+    <div id="confirm-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2 id="confirm-title">Anda yakin dengan pilihan Anda?</h2>
+            <div id="confirm-summary" class="summary-list">
+                </div>
+            <div class="modal-actions">
+                <button id="edit-choice-btn" class="button-secondary">Ubah Pilihan</button>
+                <button id="confirm-submit-btn" class="button-primary">Ya, Kirim Suara</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="thankyou-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>Terima kasih!</h2>
+            <p>Semua suara Anda telah berhasil direkam.</p>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
