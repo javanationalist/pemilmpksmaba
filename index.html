@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vote Pengurus Kelas</title>
+    <title>Pemilihan Pengurus MPK SMAN 1 Bangsal</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,13 +12,13 @@
 <body>
     <div class="container">
         <header>
-            <h1>Pemilihan Pengurus Angkatan</h1>
-            <p>Pilih Dapil Anda, lalu pilih satu perwakilan dari setiap kelas yang tersedia.</p>
+            <h1>Pemilihan Pengurus MPK 2025/2026</h1>
+            <p>Pilih satu perwakilan dari setiap kelas yang tersedia.</p>
         </header>
 
         <section class="selection-area card">
             <div class="form-group">
-                <label for="dapil-select">1. Pilih Daerah Pilihan (Dapil) Anda</label>
+                <label for="dapil-select">1.Daerah Pilihan (Dapil)</label>
                 <select id="dapil-select" class="form-control">
                     <option value="">-- Memuat Dapil --</option>
                 </select>
@@ -33,7 +33,7 @@
             </main>
     
             <footer style="margin-top: 0; border-top:none; padding-top: 24px;">
-                <a href="admin.html" class="admin-link">Masuk sebagai admin</a>
+                <a href="admin.html" class="admin-link">Out</a>
                 <button id="submit-vote" type="submit" class="submit-button" disabled>Submit Semua Pilihan</button>
             </footer>
         </form>
@@ -42,7 +42,7 @@
 
     <div id="confirm-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
-            <h2 id="confirm-title">Anda yakin dengan pilihan Anda?</h2>
+            <h2 id="confirm-title">Anda yakin dengan pilihan Anda? Tindakan ini tidak dapat diurungkan.</h2>
             <div id="confirm-summary" class="summary-list">
                 </div>
             <div class="modal-actions">
@@ -55,10 +55,11 @@
     <div id="thankyou-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <h2>Terima kasih!</h2>
-            <p>Semua suara Anda telah berhasil direkam.</p>
+            <p>Semua suara telah berhasil dikirim ke server. Silakan tinggalkan bilik suara.</p>
         </div>
     </div>
 
     <script type="module" src="app.js"></script>
 </body>
 </html>
+
