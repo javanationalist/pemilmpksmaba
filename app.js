@@ -184,10 +184,11 @@ confirmSubmitBtn.addEventListener('click', async () => {
     thankyouModal.style.display = 'flex';
 
     // Reload halaman setelah 5 detik
-    setTimeout(() => {
-        location.reload();
-    }, 5000);
+     setTimeout(() => {
+        window.location.href = LINK_TUJUAN_SETELAH_VOTE;
+    }, 5000); 
 });
 
 // Panggil fungsi inisialisasi
 loadDapil();
+
