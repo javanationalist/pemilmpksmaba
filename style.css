@@ -71,7 +71,7 @@ p {
 .candidate-photo {
     width: 100%;
     height: 180px;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 8px;
     margin-bottom: 12px;
     background-color: #e8e8e8;
@@ -559,3 +559,4 @@ footer {
 .summary-item:last-child {
     border-bottom: none;
 }
+
