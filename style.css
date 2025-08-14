@@ -412,7 +412,7 @@ footer {
 .dapil-photo-header {
     width: 100%;
     height: 200px;
-    object-fit: cover;
+    object-fit: contain;
     display: none; /* Muncul via JS */
 }
 
@@ -558,6 +558,7 @@ footer {
 .summary-item:last-child {
     border-bottom: none;
 }
+
 
 
 
