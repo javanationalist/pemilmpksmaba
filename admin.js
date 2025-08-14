@@ -147,7 +147,7 @@ async function loadVoteResults() {
         const response = await supabase
             .from('votes')
             .select('*, pengurus(*, kelas(*, dapil(*)))')
-            .limit(10000);
+            .limit(1000000);
         votes = response.data;
         error = response.error;
 
@@ -171,7 +171,7 @@ async function loadVoteResults() {
                     .from('votes')
                     .select('*, pengurus(*, kelas(*, dapil(*)))')
                     .in('pengurus_id', pengurusIds) // <-- Kunci utamanya di sini
-                    .limit(10000);
+                    .limit(1000000);
                 votes = response.data;
                 error = response.error;
             }
@@ -236,3 +236,4 @@ document.getElementById('reset-votes-btn').addEventListener('click', async () =>
 
 // Inisialisasi
 handleAuthStateChange();
+
