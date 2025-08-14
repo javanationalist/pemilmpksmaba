@@ -138,9 +138,17 @@ async function loadVoteResults() {
     const dapilId = dapilFilterSelect.value;
     
     // Ambil semua suara, lalu filter di frontend
-    const { data: votes, error } = await supabase.from('votes').select(`*, pengurus(*, kelas(*, dapil(*)))`);
-    if (error) { console.error("Error loading votes:", error); return; }
+    const { data: votes, error } = await supabase
+        .from('votes')
+        .select(`*, pengurus(*, kelas(*, dapil(*)))`)
+        .limit(10000); // Perubahan ada di sini
 
+    if (error) { 
+        console.error("Error loading votes:", error); 
+        return; 
+    }
+
+    // ... sisa dari fungsi ini tidak perlu diubah ...
     const filteredVotes = dapilId === 'all' ? votes : votes.filter(v => v.pengurus?.kelas?.dapil_id == dapilId);
     
     resultsContainer.innerHTML = '';
@@ -191,3 +199,4 @@ document.getElementById('reset-votes-btn').addEventListener('click', async () =>
 
 // Inisialisasi
 handleAuthStateChange();
+
