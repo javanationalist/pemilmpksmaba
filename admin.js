@@ -134,29 +134,66 @@ function populateDapilFilter(dapilList) {
 }
 dapilFilterSelect.addEventListener('change', loadVoteResults);
 
+// FUNGSI INI TELAH DIPERBARUI UNTUK MENGHITUNG SUARA DENGAN BENAR
 async function loadVoteResults() {
     const dapilId = dapilFilterSelect.value;
-    
-    // Ambil semua suara, lalu filter di frontend
-    const { data: votes, error } = await supabase
-        .from('votes')
-        .select(`*, pengurus(*, kelas(*, dapil(*)))`)
-        .limit(10000); // Perubahan ada di sini
+    resultsContainer.innerHTML = '<p>Memuat hasil suara...</p>'; // Tampilkan loader
 
+    let votes = [];
+    let error = null;
+
+    if (dapilId === 'all') {
+        // Jika memilih "Semua Dapil", ambil semua suara (dengan limit)
+        const response = await supabase
+            .from('votes')
+            .select('*, pengurus(*, kelas(*, dapil(*)))')
+            .limit(10000);
+        votes = response.data;
+        error = response.error;
+
+    } else {
+        // Jika memilih Dapil spesifik, lakukan 2 langkah:
+        // Langkah 1: Cari tahu dulu ID semua calon pengurus yang ada di Dapil tersebut.
+        const { data: pengurusInDapil, error: pengurusError } = await supabase
+            .from('pengurus')
+            .select('id, kelas!inner(dapil_id)')
+            .eq('kelas.dapil_id', dapilId);
+
+        if (pengurusError) {
+            error = pengurusError;
+        } else {
+            // Ubah hasilnya menjadi array ID, contoh: [1, 5, 12, 23]
+            const pengurusIds = pengurusInDapil.map(p => p.id);
+
+            if (pengurusIds.length > 0) {
+                // Langkah 2: Ambil semua suara yang HANYA untuk calon-calon tersebut.
+                const response = await supabase
+                    .from('votes')
+                    .select('*, pengurus(*, kelas(*, dapil(*)))')
+                    .in('pengurus_id', pengurusIds) // <-- Kunci utamanya di sini
+                    .limit(10000);
+                votes = response.data;
+                error = response.error;
+            }
+        }
+    }
+
+    // Bagian di bawah ini untuk menampilkan hasil (TIDAK ADA PERUBAHAN)
     if (error) { 
         console.error("Error loading votes:", error); 
+        resultsContainer.innerHTML = `<p class="error-message">Gagal memuat suara: ${error.message}</p>`;
+        return; 
+    }
+    
+    resultsContainer.innerHTML = '';
+    if (!votes || votes.length === 0) { 
+        resultsContainer.innerHTML = '<p>Belum ada suara untuk filter ini.</p>'; 
         return; 
     }
 
-    // ... sisa dari fungsi ini tidak perlu diubah ...
-    const filteredVotes = dapilId === 'all' ? votes : votes.filter(v => v.pengurus?.kelas?.dapil_id == dapilId);
-    
-    resultsContainer.innerHTML = '';
-    if (filteredVotes.length === 0) { resultsContainer.innerHTML = '<p>Belum ada suara untuk filter ini.</p>'; return; }
-
-    const resultsByClass = {}; // { "Kelas A": { "Calon 1": 10, "Calon 2": 5 } }
-    filteredVotes.forEach(vote => {
-        if (!vote.pengurus) return;
+    const resultsByClass = {};
+    votes.forEach(vote => {
+        if (!vote.pengurus || !vote.pengurus.kelas) return;
         const className = vote.pengurus.kelas.name;
         const pengurusName = vote.pengurus.name;
         if (!resultsByClass[className]) resultsByClass[className] = {};
@@ -199,4 +236,3 @@ document.getElementById('reset-votes-btn').addEventListener('click', async () =>
 
 // Inisialisasi
 handleAuthStateChange();
-
