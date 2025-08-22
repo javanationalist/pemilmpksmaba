@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Voting Pengurus</title>
+    <title>Admin Dashboard - Voting MPK</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,9 +11,10 @@
 </head>
 <body>
 
+    <!-- Login Page -->
     <div id="login-page" class="container">
-        <div class="login-form-container">
-            <h1>Masuk Sebagai Admin</h1>
+        <div class="login-form-container card">
+            <h1>Admin MPK</h1>
             <form id="login-form">
                 <div class="form-group">
                     <label for="email">Email</label>
@@ -23,23 +24,24 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" required>
                 </div>
-                <button type="submit" class="button-primary full-width">Masuk</button>
+                <button type="submit" class="button-base button-primary full-width">Masuk</button>
                 <p id="login-error" class="error-message"></p>
             </form>
              <a href="index.html" class="admin-link" style="text-align: center; display:block; margin-top: 20px;">Kembali ke Halaman Voting</a>
         </div>
     </div>
 
+    <!-- Admin Dashboard -->
     <div id="admin-dashboard" class="container" style="display: none;">
         <header class="admin-header">
             <h1>Admin Dashboard</h1>
-            <button id="logout-btn" class="button-secondary">Keluar</button>
+            <button id="logout-btn" class="button-base button-secondary">Keluar</button>
         </header>
 
         <section class="card">
             <div class="card-header">
                 <h2>Hasil Perolehan Suara</h2>
-                <button id="reset-votes-btn" class="button-danger">Reset Semua Suara</button>
+                <button id="reset-votes-btn" class="button-base button-danger">Reset Semua Suara</button>
             </div>
             <div class="form-group">
                 <label for="dapil-filter-select">Tampilkan Hasil untuk Dapil:</label>
@@ -53,10 +55,13 @@
         </section>
 
         <section class="card">
-            <h2>Manajemen Daerah Pilihan & Kelas</h2>
+            <div class="card-header">
+                <h2>Manajemen Dapil & Kelas</h2>
+            </div>
             <div id="dapil-management-container">
-                </div>
-            <hr style="margin: 20px 0;">
+                <!-- Dapil management UI loaded by JS -->
+            </div>
+            <hr style="margin: 30px 0 20px 0; border-color: rgba(0,0,0,0.08);">
             <h3>Tambah Dapil Baru</h3>
             <form id="add-dapil-form">
                 <div class="form-group">
@@ -64,10 +69,10 @@
                     <input type="text" id="dapil-name" required>
                 </div>
                 <div class="form-group">
-                    <label>URL Foto Dapil</label>
+                    <label>URL Foto Dapil (Opsional)</label>
                     <input type="text" id="dapil-photo-url" placeholder="https://example.com/foto.jpg">
                 </div>
-                <button type="submit" class="button-primary">Tambah Dapil</button>
+                <button type="submit" class="button-base button-primary">Tambah Dapil</button>
             </form>
         </section>
 
