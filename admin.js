@@ -1,13 +1,10 @@
-// Import Supabase
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-// Konfigurasi Supabase
 const SUPABASE_URL = 'https://osracolqgafwotunadgt.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zcmFjb2xxZ2Fmd290dW5hZGd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUwNzk3ODAsImV4cCI6MjA3MDY1NTc4MH0.bD6onMXzsbPMxxINjaMfi7Fc1g63EJUa4ys8cd58Xgs';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Elemen DOM
 const loginPage = document.getElementById('login-page');
 const adminDashboard = document.getElementById('admin-dashboard');
 const loginForm = document.getElementById('login-form');
@@ -17,7 +14,6 @@ const dapilManagementContainer = document.getElementById('dapil-management-conta
 const addDapilForm = document.getElementById('add-dapil-form');
 const dapilFilterSelect = document.getElementById('dapil-filter-select');
 
-// === FUNGSI UTAMA & AUTHENTIKASI ===
 async function handleAuthStateChange() {
     const { data: { session } } = await supabase.auth.getSession();
     if (session) {
@@ -33,9 +29,7 @@ loginForm.addEventListener('submit', async (e) => { e.preventDefault(); const { 
 logoutBtn.addEventListener('click', async () => { await supabase.auth.signOut(); handleAuthStateChange(); });
 
 
-// === FUNGSI BARU UNTUK MEMUAT SEMUA DATA ADMIN ===
 async function loadAdminData() {
-    // Ambil data secara bertingkat: dapil -> kelas -> pengurus
     const { data: dapilData, error } = await supabase.from('dapil').select(`
         id, name, photo_url,
         kelas ( id, name, pengurus ( id, name ) )
@@ -45,10 +39,9 @@ async function loadAdminData() {
     
     renderDapilManagement(dapilData);
     populateDapilFilter(dapilData);
-    loadVoteResults(); // Muat hasil suara awal
+    loadVoteResults();
 }
 
-// === FUNGSI RENDER & MANAJEMEN DAPIL ===
 function renderDapilManagement(dapilList) {
     dapilManagementContainer.innerHTML = '';
     if (dapilList.length === 0) {
@@ -98,7 +91,6 @@ function renderDapilManagement(dapilList) {
     });
 }
 
-// === EVENT LISTENERS (EVENT DELEGATION) UNTUK SEMUA AKSI CRUD ===
 dapilManagementContainer.addEventListener('click', async (e) => {
     const action = e.target.dataset.action;
     const id = e.target.dataset.id;
@@ -117,7 +109,6 @@ dapilManagementContainer.addEventListener('submit', async (e) => {
     if (action === 'add-pengurus') await supabase.from('pengurus').insert({ name: input.value, kelas_id: e.target.dataset.kelasId }).then(loadAdminData);
 });
 
-// Form Tambah Dapil
 addDapilForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = document.getElementById('dapil-name').value;
@@ -127,23 +118,21 @@ addDapilForm.addEventListener('submit', async (e) => {
     loadAdminData();
 });
 
-// === FUNGSI HASIL SUARA (VOTE RESULTS) ===
 function populateDapilFilter(dapilList) {
     dapilFilterSelect.innerHTML = '<option value="all">-- Semua Dapil --</option>';
     dapilList.forEach(d => { dapilFilterSelect.innerHTML += `<option value="${d.id}">${d.name}</option>`; });
 }
 dapilFilterSelect.addEventListener('change', loadVoteResults);
 
-// FUNGSI INI TELAH DIPERBARUI UNTUK MENGHITUNG SUARA DENGAN BENAR
 async function loadVoteResults() {
     const dapilId = dapilFilterSelect.value;
-    resultsContainer.innerHTML = '<p>Memuat hasil suara...</p>'; // Tampilkan loader
+    resultsContainer.innerHTML = '<p>Memuat hasil suara...</p>';
 
     let votes = [];
     let error = null;
 
     if (dapilId === 'all') {
-        // Jika memilih "Semua Dapil", ambil semua suara (dengan limit)
+
         const response = await supabase
             .from('votes')
             .select('*, pengurus(*, kelas(*, dapil(*)))')
@@ -152,8 +141,7 @@ async function loadVoteResults() {
         error = response.error;
 
     } else {
-        // Jika memilih Dapil spesifik, lakukan 2 langkah:
-        // Langkah 1: Cari tahu dulu ID semua calon pengurus yang ada di Dapil tersebut.
+
         const { data: pengurusInDapil, error: pengurusError } = await supabase
             .from('pengurus')
             .select('id, kelas!inner(dapil_id)')
@@ -162,15 +150,14 @@ async function loadVoteResults() {
         if (pengurusError) {
             error = pengurusError;
         } else {
-            // Ubah hasilnya menjadi array ID, contoh: [1, 5, 12, 23]
+
             const pengurusIds = pengurusInDapil.map(p => p.id);
 
             if (pengurusIds.length > 0) {
-                // Langkah 2: Ambil semua suara yang HANYA untuk calon-calon tersebut.
                 const response = await supabase
                     .from('votes')
                     .select('*, pengurus(*, kelas(*, dapil(*)))')
-                    .in('pengurus_id', pengurusIds) // <-- Kunci utamanya di sini
+                    .in('pengurus_id', pengurusIds)
                     .limit(1000000);
                 votes = response.data;
                 error = response.error;
@@ -178,7 +165,6 @@ async function loadVoteResults() {
         }
     }
 
-    // Bagian di bawah ini untuk menampilkan hasil (TIDAK ADA PERUBAHAN)
     if (error) { 
         console.error("Error loading votes:", error); 
         resultsContainer.innerHTML = `<p class="error-message">Gagal memuat suara: ${error.message}</p>`;
@@ -225,7 +211,6 @@ async function loadVoteResults() {
     }
 }
 
-// Tombol Reset Suara
 document.getElementById('reset-votes-btn').addEventListener('click', async () => {
     if (confirm('YAKIN? Ini akan menghapus SEMUA data suara.')) {
         await supabase.from('votes').delete().neq('id', -1);
@@ -234,6 +219,6 @@ document.getElementById('reset-votes-btn').addEventListener('click', async () =>
     }
 });
 
-// Inisialisasi
 handleAuthStateChange();
+
 
