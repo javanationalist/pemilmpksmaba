@@ -1,4 +1,3 @@
-/* General Styling & iOS 26 Theme */
 :root {
     --bg-color: #f0f2f5;
     --card-bg-color: rgba(255, 255, 255, 0.7);
@@ -57,7 +56,6 @@ p {
     line-height: 1.5;
 }
 
-/* Base Card Style */
 .card {
     background: var(--card-bg-color);
     padding: 24px;
@@ -68,7 +66,6 @@ p {
     border: 1px solid var(--glass-border-color);
 }
 
-/* Form Elements */
 .form-group {
     margin-bottom: 20px;
 }
@@ -97,7 +94,6 @@ p {
     box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
 }
 
-/* Button Styles */
 .button-base {
     font-weight: 600;
     padding: 12px 24px;
@@ -129,7 +125,6 @@ p {
     font-size: 14px;
 }
 
-/* Main Voting Page Specifics */
 .selection-area {
     padding: 32px;
 }
@@ -159,8 +154,8 @@ p {
 #dapil-photo {
     width: 100%;
     height: 250px;
-    object-fit: cover;
-    display: none; /* Muncul via JS */
+    object-fit: contain;
+    display: none;
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
 }
@@ -177,7 +172,6 @@ p {
     margin-bottom: 15px;
 }
 
-/* Candidate Radio Button Grid */
 .candidate-radio-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -208,7 +202,6 @@ p {
     transform: translateY(-2px);
 }
 
-/* Modal Styling */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.2);
@@ -236,7 +229,6 @@ p {
 }
 .summary-item:last-child { border-bottom: none; }
 
-/* Admin Page Styling */
 .login-form-container {
     max-width: 420px; width: 100%; margin: 80px auto; padding: 32px;
 }
@@ -280,7 +272,6 @@ p {
 .form-inline input { flex-grow: 1; }
 .empty-text { font-size: 14px; color: var(--secondary-text-color); padding: 10px; }
 
-/* Results Styling */
 .result-class-group {
     margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color-input);
 }
@@ -301,7 +292,6 @@ p {
     line-height: 24px; padding-right: 10px; box-sizing: border-box;
 }
 
-/* Skeleton Loader */
 .skeleton-loader {
     background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
     background-size: 200% 100%;
@@ -313,3 +303,4 @@ p {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+
